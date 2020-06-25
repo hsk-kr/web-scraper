@@ -10,6 +10,7 @@
   "author": "hsk.coder@gmail.com",
   "license": "ISC",
   "devDependencies": {
+    "@types/cheerio": "^0.22.18",
     "@types/node": "^14.0.14",
     "@types/request-promise": "^4.1.46",
     "cheerio": "^1.0.0-rc.3",

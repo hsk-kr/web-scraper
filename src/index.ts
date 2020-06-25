@@ -1,7 +1,8 @@
 import { fetchStockList } from './lib/naver-stock-scraping';
 
 const main = async () => {
-    await fetchStockList();
+    const list: any = await fetchStockList("kospi");
+    console.log(list);
 };
 
 main();
