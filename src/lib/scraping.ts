@@ -1,28 +1,32 @@
-import axios from 'axios';
-import iconv from 'iconv-lite';
+import axios from "axios";
+import iconv from "iconv-lite";
+import sleep from "sleep";
 
 /**
- * Returns html source if there is an error, returns ''
- * @param url 
+ * Return html source if there is an error, returns ''
+ * @param url
  */
 export const fetchSourceFromurl = async (url: string): Promise<string> => {
-    try {
-        const res: any = await axios.get(url, { responseType: 'arraybuffer' });
+  try {
+    // sleep.msleep(50 + Math.round(Math.random() * 100)); // prevent blocking by website
 
-        if (res.status === 200) {
-            const ctype: string = res.headers['content-type'];
+    const res: any = await axios.get(url, {
+      responseType: "arraybuffer",
+      timeout: 1000,
+    });
+    if (res.status === 200) {
+      const ctype: string = res.headers["content-type"];
 
-            if (ctype.toLocaleLowerCase().includes('euc-kr')) {
-                return iconv.decode(res.data, 'euc-kr');
-            }
+      if (ctype.toLocaleLowerCase().includes("euc-kr")) {
+        return iconv.decode(res.data, "euc-kr");
+      }
 
-            return iconv.decode(res.data, 'utf-8');
-        } else {
-            throw new Error(`Response status code: ${res.status}`);
-        }
-    } catch (e) {
-        console.error(e);
-        return '';
-
+      return res.data;
+    } else {
+      throw new Error(`Response status code: ${res.status}`);
     }
+  } catch (e) {
+    console.error(e);
+    return "";
+  }
 };
