@@ -16,3 +16,11 @@ export interface TradingHistory {
     isRise: boolean;
     date: object;
 }
+
+export interface AnalyzedDataType {
+    name: string;
+    detailPageUrl: string;
+    stockType: string;
+    weightValue: number;
+    continuousDays: number;
+}
