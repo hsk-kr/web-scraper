@@ -1,7 +1,7 @@
 import {
   fetchStockList,
   fetchTradingHistory,
-} from "./lib/naver-stock-scraping";
+} from "./lib/naver-stock/naver-stock-scraping";
 
 const main = async () => {
   const list: any = await fetchStockList("kospi");

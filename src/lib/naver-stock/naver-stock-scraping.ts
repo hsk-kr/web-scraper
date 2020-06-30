@@ -1,5 +1,5 @@
 import fs from "fs";
-import { fetchSourceFromurl } from "./scraping";
+import { fetchSourceFromurl } from "../scraping";
 import cheerio from "cheerio";
 import { URLS, Stock, StockType, TradingHistory } from './naver-stock-type';
 

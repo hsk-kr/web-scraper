@@ -4,23 +4,11 @@ const sqlite3: any = require('sqlite3').verbose();
 const DB_FILE_PATH: string = './naver_stocks.db';
 const TBL_ANALYZED_DATA = 'naver_analyzed_data';
 
-const openDB = () => {
+export const insertAnalyzedData = (data: AnalyzedDataType) => {
     return new Promise((resolve, reject) => {
-        const db: any = new sqlite3().Database(DB_FILE_PATH, (err) => {
+        const db: any = new sqlite3().Database(DB_FILE_PATH, (err: any) => {
             reject(err);
         });
-        resolve(db);
-    });
-};
-
-export const insertAnalyzedData = async (data: AnalyzedDataType): void => {
-    return new Promise((resolve, reject) => {
-        let db: any = null;
-        try {
-            db = await openDB();
-        } catch (e) {
-            reject(e);
-        }
 
         db.serialize(() => {
             db.run(`
@@ -43,7 +31,7 @@ export const insertAnalyzedData = async (data: AnalyzedDataType): void => {
                 data.stockType,
                 data.weightValue,
                 data.continuousDays
-            ], (err) => {
+            ], (err: any) => {
                 if (err) {
                     reject(err);
                 }
@@ -51,20 +39,18 @@ export const insertAnalyzedData = async (data: AnalyzedDataType): void => {
         });
 
         db.close();
+        resolve();
     });
 };
 
 /**
  * Create stock analyzed data table if not exists
  */
-export const initializeTables = async (): void => {
+export const initializeTables = () => {
     return new Promise((resolve, reject) => {
-        let db = null;
-        try {
-            db = await openDB();
-        } catch (e) {
-            reject(e);
-        }
+        const db: any = new sqlite3().Database(DB_FILE_PATH, (err: any) => {
+            reject(err);
+        });
 
         db.serialize(() => {
             db.run(`
@@ -81,5 +67,6 @@ export const initializeTables = async (): void => {
         });
 
         db.close();
+        resolve();
     });
 };
