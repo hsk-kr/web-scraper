@@ -8,8 +8,9 @@ const stockUrls: URLS = {
         "https://finance.naver.com/sise/sise_market_sum.nhn?sosok={type}&page={page}",
     TRADING_TREND:
         "https://finance.naver.com/item/frgn.nhn?code={code}&page={page}",
+    DETAIL_PREFIX:
+        "https://finance.naver.com",
 };
-
 
 /**
  * Gernerate market page url using type and page number that page has stock list
@@ -125,7 +126,7 @@ export const fetchStockList = async (
 
             const newStock: Stock = {
                 name: aElem.text(),
-                detailPageUrl: aElem.attr("href"),
+                detailPageUrl: stockUrls.DETAIL_PREFIX + aElem.attr("href"),
                 stockType: type,
             };
             stockList.push(newStock);

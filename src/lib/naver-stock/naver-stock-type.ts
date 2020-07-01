@@ -6,6 +6,7 @@ export interface Stock {
     name: string;
     detailPageUrl: string;
     stockType: string;
+    tradingHistory?: TradingHistory[]
 }
 
 export type StockType = "kospi" | "kosdaq";
