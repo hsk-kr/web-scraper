@@ -37,56 +37,54 @@ const generateTradingTrendUrl = (code: string, page: number): string => {
 
 /**
  * Fetch trading history of the stock
- * @param stockList Stock[]
+ * @param stockList Stock
  * @param maxPage number if maxPage is defiened, crawling trading trend data till this page
  */
 export const fetchTradingHistory = async (
-    stockList: Stock[],
+    stock: Stock,
     maxPage: number = 0
 ): Promise<Array<TradingHistory>> => {
     const tradingHistory: TradingHistory[] = [];
 
-    for (let i = 0; i < stockList.length; i++) {
-        const code = stockList[i].detailPageUrl.split("=")[1];
+    const code = stock.detailPageUrl.split("=")[1];
 
-        for (let page = 1; page <= maxPage || maxPage === 0; page += 1) {
-            const source: string = await fetchSourceFromurl(
-                generateTradingTrendUrl(code, page)
-            );
-            const $: any = cheerio.load(source);
+    for (let page = 1; page <= maxPage || maxPage === 0; page += 1) {
+        const source: string = await fetchSourceFromurl(
+            generateTradingTrendUrl(code, page)
+        );
+        const $: any = cheerio.load(source);
 
-            const tradingTrendTable: any = $("table.type2").get(1);
+        const tradingTrendTable: any = $("table.type2").get(1);
 
-            $(tradingTrendTable)
-                .find("tbody > tr")
-                .each((i: number, elem: any) => {
-                    const tds: any = $(elem).find("td");
+        $(tradingTrendTable)
+            .find("tbody > tr")
+            .each((i: number, elem: any) => {
+                const tds: any = $(elem).find("td");
 
-                    if (tds.length !== 9) {
-                        return;
-                    }
+                if (tds.length !== 9) {
+                    return;
+                }
 
-                    const institution: number = Number(
-                        $(tds).eq(5).find("span").text().replace(/,/g, "")
-                    );
-                    const foreigner: number = Number(
-                        $(tds).eq(6).find("span").text().replace(/,/g, "")
-                    );
-                    let isRise: boolean = false;
-                    const iconImg = $(tds).eq(2).find("img");
-                    if (iconImg.html() !== null) {
-                        isRise = $(tds).eq(2).find("img").attr("src").indexOf("ico_up") > 0;
-                    }
-                    const date = $(tds).eq(0).find("span").text();
+                const institution: number = Number(
+                    $(tds).eq(5).find("span").text().replace(/,/g, "")
+                );
+                const foreigner: number = Number(
+                    $(tds).eq(6).find("span").text().replace(/,/g, "")
+                );
+                let isRise: boolean = false;
+                const iconImg = $(tds).eq(2).find("img");
+                if (iconImg.html() !== null) {
+                    isRise = $(tds).eq(2).find("img").attr("src").indexOf("ico_up") > 0;
+                }
+                const date = $(tds).eq(0).find("span").text();
 
-                    tradingHistory.push({
-                        institution,
-                        foreigner,
-                        isRise,
-                        date,
-                    });
+                tradingHistory.push({
+                    institution,
+                    foreigner,
+                    isRise,
+                    date,
                 });
-        }
+            });
     }
 
     return tradingHistory;
