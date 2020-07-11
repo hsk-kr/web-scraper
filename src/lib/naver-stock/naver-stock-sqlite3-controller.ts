@@ -1,7 +1,7 @@
 import { AnalyzedDataType } from "./naver-stock-type";
 const sqlite3 = require("sqlite3");
 
-const DB_FILE_PATH: string = "./naver_stocks.db";
+const DB_FILE_PATH: string = "./db.sqlite3";
 const TBL_ANALYZED_DATA = "naver_analyzed_data";
 
 export const insertAnalyzedData = (data: AnalyzedDataType) => {
