@@ -21,7 +21,7 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "iconv-lite": "^0.6.0",
     "sleep": "^6.2.0",
     "sqlite3": "^4.2.0"
